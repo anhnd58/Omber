@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.sign_up) {
 
         } else if (id == R.id.map) {
-            Intent intent = new Intent(MainActivity.this, MapCustomer.class);
+            Intent intent = new Intent(MainActivity.this, MapRider.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_manage) {
