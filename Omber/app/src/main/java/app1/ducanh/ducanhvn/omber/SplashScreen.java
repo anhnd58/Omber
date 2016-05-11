@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 /**
  * Created by tajse on 5/6/2016.
@@ -28,12 +30,14 @@ public class SplashScreen extends AppCompatActivity {
 
             @Override
             public void run() {
+
+                ProgressBar mProgress= (ProgressBar) findViewById(R.id.progressBar);
+                mProgress.setVisibility(View.GONE);
+
                 // This method will be executed once the timer is over
                 // Start your app main activity
                 Intent i = new Intent(SplashScreen.this, MainActivity.class);
                 startActivity(i);
-
-                // close this activity
                 finish();
             }
         }, TIME_OUT);

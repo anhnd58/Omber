@@ -8,6 +8,7 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
@@ -21,12 +22,12 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyBtCJ2gK4nYuYdMqrcBbQwiIW5cU1vwOd0" />
 
         <activity
             android:name="SplashScreen"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">>
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -58,6 +59,11 @@
             android:name=".SignUp"
             android:parentActivityName=".MainActivity"
             android:label="Sign Up">
+        </activity>
+        <activity
+            android:name=".SettingActivity"
+            android:parentActivityName=".MainActivity"
+            android:label="@string/action_settings">
         </activity>
     </application>
 

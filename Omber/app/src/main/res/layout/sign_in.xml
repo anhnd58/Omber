@@ -3,10 +3,15 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.7">
+    </RelativeLayout>
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="10dp"
-        android:layout_weight="1.5">
+        android:layout_weight="3">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -14,45 +19,58 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/customborder"
-        android:layout_weight="1">
-        <EditText
-            android:id="@+id/et_id_sign_in"
-            android:layout_width="300dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="40dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="15dp"
-            android:layout_height="wrap_content"
-            android:hint="ID"
-            android:background="#00000000"
-            android:inputType="text"
-            android:textSize="10pt"
-            android:textColorHint="@android:color/darker_gray"
-        />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.4">
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="10dp"
         android:background="@drawable/customborder"
-        android:layout_weight="1">
+        android:layout_weight="1.2">
         <EditText
-            android:id="@+id/et_password_sign_in"
+            android:id="@+id/edit_id"
             android:layout_width="300dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="40dp"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="15dp"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/id"
+            android:background="#00000000"
+            android:inputType="text"
+            android:textSize="7pt"
+            android:textColorHint="@color/gray"
+        />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2">
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/customborder"
+        android:layout_weight="1.2">
+        <EditText
+            android:id="@+id/edit_password"
+            android:layout_width="300dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="15dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
             android:background="#00000000"
             android:inputType="textPassword"
-            android:textSize="10pt"
-            android:textColorHint="@android:color/darker_gray"
+            android:textSize="7pt"
+            android:textColorHint="@color/gray"
             />
     </RelativeLayout>
     <RelativeLayout
@@ -61,40 +79,47 @@
         android:layout_margin="10dp"
         android:layout_weight="1">
         <CheckBox
-            android:id="@+id/cb_remember"
+            android:id="@+id/remember"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Remember me"
-            android:textColor="@android:color/holo_green_dark"/>
+            android:text="@string/remember"
+            android:textColor="@color/black"
+            android:textSize="7pt"/>
     </RelativeLayout>
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="10dp"
-        android:layout_weight="1">
+        android:layout_width="362dp"
+        android:layout_height="37dp"
+        android:layout_margin="40dp"
+        android:layout_centerInParent="true"
+        android:layout_weight="0.33">
         <Button
-            android:id="@+id/bt_sign_in"
+            android:id="@+id/button_signin"
             android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="55dp"
-            android:text="Login"
-            android:textSize="10pt"
+            android:text="@string/signin"
+            android:textColor="@color/white"
+            android:textSize="7pt"
             android:background="@drawable/customborder"
-            android:backgroundTint="?attr/colorPrimary"/>
+            android:backgroundTint="?attr/colorPrimary"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp" />
+
         <Button
-            android:id="@+id/bt_sign_in_cancel"
+            android:id="@+id/button_cancel"
             android:layout_width="120dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="55dp"
-            android:text="Cancel"
-            android:textSize="10pt"
+            android:text="@string/cancel"
+            android:textColor="@color/white"
+            android:textSize="7pt"
             android:background="@drawable/customborder"
-            android:backgroundTint="?attr/colorPrimary"/>
+            android:backgroundTint="?attr/colorPrimary"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/button_signin"
+            android:layout_toEndOf="@+id/button_signin" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
