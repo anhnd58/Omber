@@ -49,13 +49,6 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/butMenu"
-                    android:layout_width="@dimen/search_box_height"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="@dimen/search_box_margin_left"
-                    android:background="@android:color/white"
-                    android:src="@drawable/ic_menu" />
 
                 <EditText
                     android:id="@+id/edtSearch"

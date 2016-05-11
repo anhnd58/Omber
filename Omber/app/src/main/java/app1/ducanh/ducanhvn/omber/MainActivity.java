@@ -1,6 +1,8 @@
 package app1.ducanh.ducanhvn.omber;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,14 +16,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    SharedPreferences sharePreferences;
+    EditText username, pass;
+    Button login, cancel;
+
+    static private final int GET_TEXT_REQUEST_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        if (SignIn.CHECK_SIGNIN) {
+            setContentView(R.layout.activity_main_when_signin_success);
+        }
+        else {
+            setContentView(R.layout.activity_main);
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -35,6 +51,46 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        sharePreferences = getSharedPreferences("config", Context.MODE_PRIVATE);
+        String taikhoan, matkhau;
+        taikhoan = sharePreferences.getString("TaiKhoan", "");
+        matkhau = sharePreferences.getString("MatKhau", "");
+        username = (EditText) findViewById(R.id.edit_id);
+        pass = (EditText) findViewById(R.id.edit_password);
+        login = (Button) findViewById(R.id.button_signin);
+        cancel = (Button) findViewById(R.id.button_cancel);
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String mkcf, tkcf, mkdn, tkdn;
+                mkcf = sharePreferences.getString("MatKhau", "");
+                tkcf = sharePreferences.getString("TaiKhoan", "");
+                tkdn = username.getText().toString();
+                mkdn = pass.getText().toString();
+                if (tkdn.equals(tkcf) && mkdn.equals(mkcf)) {
+                    Toast.makeText(getApplication(), "Đăng nhập thành công ", Toast.LENGTH_SHORT).show();
+                    //SignIn.CHECK_SIGNIN = true
+                    Intent intent2 = new Intent(MainActivity.this, MapCustomer.class);
+                    startActivity(intent2);
+
+                } else {
+                    Toast.makeText(getApplication(), "Đăng nhập không thành công", Toast.LENGTH_SHORT).show();
+                    username.setText("");
+                    pass.setText("");
+                }
+
+            }
+        });
+
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+        });
 
     }
 
@@ -64,8 +120,6 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(MainActivity.this, SettingActivity.class);
-            startActivity(intent);
             return true;
         }
 
@@ -79,15 +133,20 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.sign_in) {
-            Intent intent = new Intent(MainActivity.this, SignIn.class);
-            startActivity(intent);
+            Intent intent = new Intent( this, SignIn.class);
+            startActivityForResult(intent, GET_TEXT_REQUEST_CODE);
         } else if (id == R.id.sign_up) {
             Intent intent = new Intent(MainActivity.this, SignUp.class);
             startActivity(intent);
         } else if (id == R.id.map) {
-            Intent intent = new Intent(MainActivity.this, MapCustomer.class);
+            Intent intent = new Intent(MainActivity.this, MapRider.class);
+            startActivity(intent);
+        } else if (id == R.id.sign_out) {
+            SignIn.CHECK_SIGNIN = false;
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

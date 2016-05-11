@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,7 +37,9 @@ import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -86,7 +89,7 @@ import java.util.List;
 /**
  * Created by Dell 3360 on 5/2/2016.
  */
-public class MapCustomer extends FragmentActivity implements OnMapReadyCallback {
+public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
     private static final float ZOOM_CAMERA = 13.0f;
     private static final double LATITUDE_CAMERA = 21.03844442;
     private static final double LONGGITUDE_CAMERA = 105.78237534;
@@ -119,16 +122,29 @@ public class MapCustomer extends FragmentActivity implements OnMapReadyCallback 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        arrsRider.add(new Rider(0, "Nguyen Duc Anh", 21.009642, 105.788684, "8.5", "01655756848", "Nhiet tinh"));
-        arrsRider.add(new Rider(1, "Nguyen Van B", 21.030575, 105.782963 , "8.5", "01655756848", "Nhiet tinh"));
+        arrsRider.add(new Rider(0, "Nguyen Duc Anh", 21.009642, 105.788684, "8.5", "01655756848", "Nhiệt Tình"));
+        arrsRider.add(new Rider(1, "Nguyen Van B", 21.030575, 105.782963, "8.5", "01655756848", "Thân Thiện"));
         arrsRider.add(new Rider(2, "Phan Anh", 21.034901, 105.781676, "8.5", "01655756848", "Chảnh chọe"));
-        arrsRider.add(new Rider(3, "Nguyen Viet Cuong", 21.038095, 105.781419, "8.5", "01655756848", "Nhiet tinh"));
+        arrsRider.add(new Rider(3, "Nguyen Viet Cuong", 21.038095, 105.781419, "8.5", "01655756848", "Nhiệt Tình"));
         arrsRider.add(new Rider(4, "Pham Van Chinh", 21.031436, 105.777460, "8.5", "01655756848", "Chưa đánh giá"));
-        arrsRider.add(new Rider(5, "Xe Om",  20.997693, 105.841364 , "8.0", "01655756848", "Nhiet tinh"));
-        arrsRider.add(new Rider(6, "Xe Om Soai Ca",  21.038195, 105.796419 , "8.0", "01655756848", "Nhiet tinh"));
+        arrsRider.add(new Rider(5, "Xe Om", 20.997693, 105.841364, "8.0", "01655756848", "Thân Thiện"));
+        arrsRider.add(new Rider(6, "Xe Om Soai Ca", 21.038195, 105.796419, "8.0", "01655756848", "Chưa đánh giá"));
 
+        setContentView(R.layout.activity_main_when_signin_success);
 
-        setContentView(R.layout.customer_maps);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //toolbar.setLogo(R.drawable.logo_omber);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        //setContentView(R.layout.customer_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -143,7 +159,6 @@ public class MapCustomer extends FragmentActivity implements OnMapReadyCallback 
                 TextView name = (TextView) findViewById(R.id.sliding_panel_txtViewName);
                 TextView point = (TextView) findViewById(R.id.sliding_panel_tvPoint);
                 //RatingBar rate = (RatingBar) findViewById(R.id.rating);
-                //TextView university = (TextView) findViewById(R.id.sliding_panel_txtViewUniversity);
                 if (v > 0) {
                     header.setBackgroundColor(getResources().getColor(R.color.blue));
                     name.setTextColor(getResources().getColor(R.color.white));
@@ -242,7 +257,7 @@ public class MapCustomer extends FragmentActivity implements OnMapReadyCallback 
                     builder.setPositiveButton("Đồng ý", null);
                     builder.show();
                 }*/
-                Location myLocation = null;
+                /*Location myLocation = null;
                 LatLng myLatLng = new LatLng(myLocation.getLatitude(),myLocation.getLongitude());
                 CameraPosition cameraPosition = new CameraPosition.Builder()
                         .target(myLatLng)
@@ -255,7 +270,7 @@ public class MapCustomer extends FragmentActivity implements OnMapReadyCallback 
                 markerOptions.snippet("...");
                 markerOptions.position(myLatLng);
                 Marker currentMarker = mMap.addMarker(markerOptions);
-                currentMarker.showInfoWindow();
+                currentMarker.showInfoWindow();*/
             }
         });
         fab_location.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
@@ -325,7 +340,7 @@ public class MapCustomer extends FragmentActivity implements OnMapReadyCallback 
                             TextView name_rider = (TextView) findViewById(R.id.sliding_panel_txtViewName);
                             name_rider.setText(String.valueOf(rider.getName()));
                             TextView point_rider = (TextView) findViewById(R.id.sliding_panel_tvPoint);
-                            point_rider.setText("Chấm điểm: "+ String.valueOf(rider.getRate()));
+                            point_rider.setText("Chấm điểm: " + String.valueOf(rider.getRate()));
                             TextView phone_rider = (TextView) findViewById(R.id.sliding_panel_txtPhone);
                             if (rider.getPhone() != null) {
                                 phone_rider.setText(String.valueOf("Số điện thoại : " + rider.getPhone()));
@@ -334,7 +349,7 @@ public class MapCustomer extends FragmentActivity implements OnMapReadyCallback 
                             }
                             TextView info = (TextView) findViewById(R.id.sliding_panel_txtInfo);
                             if (rider.getInfo() != null) {
-                                info.setText("Thái độ phục vụ: "+ String.valueOf(rider.getInfo()));
+                                info.setText("Thái độ phục vụ: " + String.valueOf(rider.getInfo()));
                             } else {
                                 info.setText(String.valueOf("Thái độ phục vụ: Chưa có đánh giá"));
                             }
@@ -388,6 +403,8 @@ public class MapCustomer extends FragmentActivity implements OnMapReadyCallback 
 
         }
     }
+
+
     private class DownloadAndDrawPath extends AsyncTask<Void, Void, String> {
         private String url = null;
 
@@ -472,11 +489,11 @@ public class MapCustomer extends FragmentActivity implements OnMapReadyCallback 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage("Do you really want to call this rider?");
+            builder.setMessage("Bạn có muốn gọi xe ôm này?");
             // User cannot dismiss dialog by hitting back button
             builder.setCancelable(false);
             // Set up No Button
-            builder.setNegativeButton("No",
+            builder.setNegativeButton("Không!",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog,
                                             int id) {
@@ -485,7 +502,7 @@ public class MapCustomer extends FragmentActivity implements OnMapReadyCallback 
                     });
 
             // Set up Yes Button
-            builder.setPositiveButton("Yes",
+            builder.setPositiveButton("Có",
                     new DialogInterface.OnClickListener() {
                         public void onClick(
                                 final DialogInterface dialog, int id) {
@@ -495,5 +512,60 @@ public class MapCustomer extends FragmentActivity implements OnMapReadyCallback 
                     });
             return builder.create();
         }
+    }
+    private class AlertDialogLogOut extends DialogFragment {
+        // Build AlertDialog using AlertDialog.Builder
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Bạn có muốn đăng xuất?");
+            // User cannot dismiss dialog by hitting back button
+            builder.setCancelable(false);
+            // Set up No Button
+            builder.setNegativeButton("Không!",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,
+                                            int id) {
+                            dialog.dismiss();
+                        }
+                    });
+
+            // Set up Yes Button
+            builder.setPositiveButton("Có",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(
+                                final DialogInterface dialog, int id) {
+                            SignIn.CHECK_SIGNIN = false;
+                            Intent intent = new Intent(MapCustomer.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+            return builder.create();
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.manage_profile) {
+            Intent intent = new Intent(MapCustomer.this, ManageProfile.class);
+            startActivity(intent);
+
+        } else if (id == R.id.sign_out) {
+            AlertDialogLogOut alertDialogLogOut = new AlertDialogLogOut();
+            alertDialogLogOut.show(getFragmentManager(), "alert");
+        }
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 }
