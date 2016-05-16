@@ -85,6 +85,18 @@
             android:text="@string/remember"
             android:textColor="@color/black"
             android:textSize="7pt"/>
+        <TextView
+            android:id="@+id/bt_link_sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đăng ký"
+            android:textSize="8pt"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:textColor="@color/colorAccent"
+            android:clickable="true"
+            android:onClick="onClick"/>
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="362dp"

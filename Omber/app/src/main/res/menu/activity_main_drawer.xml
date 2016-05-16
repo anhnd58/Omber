@@ -7,10 +7,6 @@
             android:icon="@drawable/ic_launcher_signin"
             android:title="Sign in" />
         <item
-            android:id="@+id/sign_up"
-            android:icon="@drawable/ic_launcher_signup"
-            android:title="Sign up" />
-        <item
             android:id="@+id/map"
             android:icon="@drawable/ic_launcher_map"
             android:title="Map" />

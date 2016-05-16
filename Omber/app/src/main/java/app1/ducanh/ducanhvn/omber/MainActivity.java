@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity
     SharedPreferences sharePreferences;
     EditText username, pass;
     Button login, cancel;
+    TextView sign_up;
 
     static private final int GET_TEXT_REQUEST_CODE = 1;
     @Override
@@ -59,6 +61,14 @@ public class MainActivity extends AppCompatActivity
         pass = (EditText) findViewById(R.id.edit_password);
         login = (Button) findViewById(R.id.button_signin);
         cancel = (Button) findViewById(R.id.button_cancel);
+        sign_up = (TextView) findViewById(R.id.bt_link_sign_up);
+        sign_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(MainActivity.this, SignUp.class);
+                startActivity(intent1);
+            }
+        });
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,9 +145,6 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.sign_in) {
             Intent intent = new Intent( this, SignIn.class);
             startActivityForResult(intent, GET_TEXT_REQUEST_CODE);
-        } else if (id == R.id.sign_up) {
-            Intent intent = new Intent(MainActivity.this, SignUp.class);
-            startActivity(intent);
         } else if (id == R.id.map) {
             Intent intent = new Intent(MainActivity.this, MapRider.class);
             startActivity(intent);
