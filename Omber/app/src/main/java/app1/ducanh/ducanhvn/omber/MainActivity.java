@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity
         login = (Button) findViewById(R.id.button_signin);
         cancel = (Button) findViewById(R.id.button_cancel);
         sign_up = (TextView) findViewById(R.id.bt_link_sign_up);
+
         sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,15 +145,22 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.sign_in) {
-            Intent intent = new Intent( this, SignIn.class);
-            startActivityForResult(intent, GET_TEXT_REQUEST_CODE);
-        } else if (id == R.id.map) {
+        if (id == R.id.map) {
             Intent intent = new Intent(MainActivity.this, MapRider.class);
             startActivity(intent);
         } else if (id == R.id.sign_out) {
             SignIn.CHECK_SIGNIN = false;
             Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.feedback) {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=")));
+            }
+            catch (android.content.ActivityNotFoundException anfe) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=")));
+            }
+        } else if (id == R.id.help) {
+            Intent intent = new Intent(this, Info.class);
             startActivity(intent);
         }
 

@@ -41,10 +41,10 @@ public class SignUp extends AppCompatActivity {
             public void onClick(View v) {
                 //Kiểm tra tên ĐN, email, sđt, pass
                 if (!checkNull(textUser.getText().toString())){
-                    Toast.makeText(SignUp.this, "Chưa có Tên Đăng Nhập", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUp.this, "Chưa có tên đăng nhập", Toast.LENGTH_SHORT).show();
                 }
                 if (!checkNull(textPass.getText().toString())){
-                    Toast.makeText(SignUp.this, "Chưa có Mật Khẩu", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUp.this, "Chưa có mật khẩu", Toast.LENGTH_SHORT).show();
                 }
                 if (!checkNull(textName.getText().toString())){
                     Toast.makeText(SignUp.this, "Bạn chưa đặt tên", Toast.LENGTH_SHORT).show();
@@ -59,7 +59,7 @@ public class SignUp extends AppCompatActivity {
                     Toast.makeText(SignUp.this, "Mật khẩu chưa khớp", Toast.LENGTH_SHORT).show();
                 }
                 if (!checkUserName(textUser.getText().toString())){
-                    Toast.makeText(SignUp.this, "Tên Đăng Nhập đã tồn tại", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUp.this, "Tên đăng nhập đã tồn tại", Toast.LENGTH_SHORT).show();
                 }
                 //nạp vào CSDL
                 SharedPreferences.Editor edit = sharePreferences.edit();

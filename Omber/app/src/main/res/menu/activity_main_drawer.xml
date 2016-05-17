@@ -3,17 +3,17 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/sign_in"
-            android:icon="@drawable/ic_launcher_signin"
-            android:title="Sign in" />
-        <item
             android:id="@+id/map"
             android:icon="@drawable/ic_launcher_map"
             android:title="Map" />
+        <item
+            android:id="@+id/feedback"
+            android:icon="@drawable/ic_launcher_feedback"
+            android:title="@string/feedback" />
+        <item
+            android:id="@+id/help"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:title="@string/info" />
     </group>
-
-    <item android:title="Communicate">
-
-    </item>
 
 </menu>

@@ -555,6 +555,16 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
         } else if (id == R.id.sign_out) {
             AlertDialogLogOut alertDialogLogOut = new AlertDialogLogOut();
             alertDialogLogOut.show(getFragmentManager(), "alert");
+        } else if (id == R.id.feedback) {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=")));
+            }
+            catch (android.content.ActivityNotFoundException anfe) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=")));
+            }
+        } else if (id == R.id.help) {
+            Intent intent = new Intent(this, Info.class);
+            startActivity(intent);
         }
 
 

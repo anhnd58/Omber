@@ -6,6 +6,10 @@
 
     <string name="action_settings">Cài đặt</string>
 
+    <string name="account">Quản lý tài khoản</string>
+    <string name="feedback">Đánh giá</string>
+    <string name="info">Thông tin</string>
+
     <string name="id">Tên đăng nhập</string>
     <string name="password">Mật khẩu</string>
     <string name="pass_again">Nhắc lại mật khẩu</string>
@@ -16,6 +20,7 @@
 
     <string name="signup">Đăng ký</string>
     <string name="signin">Đăng nhập</string>
+    <string name="signout">Đăng xuất</string>
     <string name="cancel">Hủy bỏ</string>
     <string name="Omber">....</string>
 </resources>
