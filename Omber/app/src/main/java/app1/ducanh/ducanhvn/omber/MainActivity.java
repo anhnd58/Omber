@@ -36,13 +36,13 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (SignIn.CHECK_SIGNIN) {
+        /*if (SignIn.CHECK_SIGNIN) {
             setContentView(R.layout.activity_main_when_signin_success);
         }
         else {
             setContentView(R.layout.activity_main);
-        }
-
+        }*/
+        setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

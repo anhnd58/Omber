@@ -1,12 +1,12 @@
 package app1.ducanh.ducanhvn.omber;
-
+import app1.ducanh.ducanhvn.omber.adapter.GPSTracker;
+import app1.ducanh.ducanhvn.omber.adapter.LocationServices;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentActivity;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -49,13 +49,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
+
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -64,10 +58,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
@@ -102,8 +92,9 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
     private Handler handler = null;
     private boolean isSearch = false;
     private Location location = null;
+    private Circle circleLocation = null;
     //  marker of location
-    private Marker markerLocation = null;
+    //private Marker markerLocation = null;
 
     SlidingUpPanelLayout slidingUpPanelLayout = null;
     //  handle ponyline to show path
@@ -189,6 +180,8 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
         });
         // button goi nguoi lai xe
         butSlidingmakePhone = (ImageButton)findViewById(R.id.sliding_panel_butPhone);
+        //update location
+        //updateLocation();
         //
         final FloatingActionButton fab_location = (FloatingActionButton) findViewById(R.id.fab_location);
         fab_location.setOnClickListener(new View.OnClickListener() {
@@ -196,67 +189,8 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
             public void onClick(View view) {
 //                21.040987, 105.785605
 //                21.036921, 105.781066
-//              clear all path of direction
-                if (path != null) {
-                    path.remove();
-                }
-                /*if (location != null) {
-                    //delete all marker
-                    deleteMarker();
-//                  if location in VNU
-                    if (LEFT_BOTTOM_CONNER.latitude <= location.getLatitude() && location.getLatitude() <= RIGHT_TOP_CONNER.latitude
-                            && LEFT_BOTTOM_CONNER.longitude <= location.getLongitude() && location.getLongitude() <= RIGHT_TOP_CONNER.longitude) {
-
-//                      show buldings near location now
-                        //List<Building> buildings = ArrayBuildings.getInstance(MapsActivity.this).getBuildingsByLocation(numberofMarker, location);
-                        addMarker(arrsRider);
-
-//                      move camera to location
-                        CameraPosition cameraPosition = new CameraPosition.Builder()
-                                .target(new LatLng(location.getLatitude(), location.getLongitude()))
-                                .zoom(14)
-                                .tilt(60)
-                                .build();
-                        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-                    } else {
-//                      show marker with high priority
-
-                        //List<Building> buildings = ArrayBuildings.getInstance(MapsActivity.this).getBuildings(numberofMarker);
-                        addMarker(arrsRider);
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MapCustomer.this);
-                        builder.setTitle("VNUMap");
-                        builder.setMessage("Bạn đang ở ngoài khuôn viên ĐHQG Hà Nội. Tìm chỉ đường tới đây ?");
-                        builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                String url = JSONMap.makeURL(location.getLatitude(), location.getLongitude(), LOCATION_VNU.latitude, LOCATION_VNU.longitude);
-                                DownloadAndDrawPath downloadAndDrawPath = new DownloadAndDrawPath(url);
-                                downloadAndDrawPath.execute();
-                            }
-                        });
-                        builder.setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //move camera to location
-                                CameraPosition cameraPosition = new CameraPosition.Builder()
-                                        .target(new LatLng(location.getLatitude(), location.getLongitude()))
-                                        .zoom(ZOOM_CAMERA)
-                                        .tilt(60)
-                                        .build();
-                                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                            }
-                        });
-                        builder.show();
-                    }
-                } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MapCustomer.this);
-                    builder.setTitle("VNUMap");
-                    builder.setMessage("Bạn vui lòng bật GPS");
-                    builder.setPositiveButton("Đồng ý", null);
-                    builder.show();
-                }*/
+                updateLocation();
+//
                 /*Location myLocation = null;
                 LatLng myLatLng = new LatLng(myLocation.getLatitude(),myLocation.getLongitude());
                 CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -316,8 +250,7 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
             }
         });
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-        /*ArrayBuildings arrayBuildings = ArrayBuildings.getInstance(this);
-        List<Building> buildings = arrayBuildings.getBuildings(numberofMarker);*/
+
         addMarker(arrsRider);
 //      setting camera
         LatLng posCamera = new LatLng(21.009642, 105.788684);
@@ -483,6 +416,32 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
             }
         }
 
+    }
+
+    public void updateLocation() {
+
+        //TextView text = (TextView) findViewById(R.id.texts);
+        GPSTracker tracker = new GPSTracker(this);
+        if (!tracker.canGetLocation()) {
+            tracker.showSettingsAlert();
+        } else {
+
+            LatLng myLatLng = new LatLng(tracker.getLatitude(),tracker.getLongitude());
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(myLatLng)
+                    .zoom(14)
+                    .tilt(60)
+                    .build();
+
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.title("my location");
+            markerOptions.snippet("...");
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location));
+            markerOptions.position(myLatLng);
+            Marker currentMarker = mMap.addMarker(markerOptions);
+            currentMarker.showInfoWindow();
+        }
     }
     private class AlertDialogFragment extends DialogFragment {
         // Build AlertDialog using AlertDialog.Builder

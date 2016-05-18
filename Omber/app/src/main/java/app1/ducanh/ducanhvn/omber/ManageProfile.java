@@ -41,6 +41,7 @@ public class ManageProfile extends AppCompatActivity {
                 SharedPreferences.Editor edit = sharePreferences.edit();
                 edit.putString("DiaChi",address.getText().toString());
                 Toast.makeText(ManageProfile.this,"Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
 
