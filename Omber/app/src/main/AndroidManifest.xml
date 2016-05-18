@@ -30,7 +30,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBEk2M7vV1PbjDcX59vXbwaZ9DfhCuLnMQ" />
+            android:value="AIzaSyBtCJ2gK4nYuYdMqrcBbQwiIW5cU1vwOd0" />
 
         <activity
             android:name="SplashScreen"
@@ -60,7 +60,7 @@
         </activity>
         <activity
             android:name=".SignIn"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".MainActivity"
             android:label="Đăng nhập">
         </activity>
         <activity

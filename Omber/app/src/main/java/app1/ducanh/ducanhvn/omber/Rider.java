@@ -5,10 +5,12 @@ package app1.ducanh.ducanhvn.omber;
  */
 public class Rider {
     private String name, rate, phone, info;
-    int id;
-    double locationX, locationY;
-    public Rider(int id, String name, double locationX, double locationY, String rate, String phone, String info){
+    private int id, img;
+    private double locationX, locationY;
+
+    public Rider(int id, int img, String name, double locationX, double locationY, String rate, String phone, String info){
         this.id = id;
+        this.img = img;
         this.name = name;
         this.rate = rate;
         this.phone = phone;
@@ -17,6 +19,9 @@ public class Rider {
         this.locationY = locationY;
     }
 
+    public int getImg() {
+        return img;
+    }
     public String getName() {
         return name;
     }

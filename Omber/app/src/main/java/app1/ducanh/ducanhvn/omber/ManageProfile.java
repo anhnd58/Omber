@@ -14,21 +14,24 @@ import android.widget.Toast;
  */
 public class ManageProfile extends AppCompatActivity {
     SharedPreferences sharePreferences;
-    EditText rename, rephone, address;
+    EditText rename, rephone, address,remail;
     Button save, cancel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_profile);
         sharePreferences = getSharedPreferences("config", Context.MODE_PRIVATE);
-        String ten, sodienthoai,diachi;
+        String ten, sodienthoai,diachi, email ;
         ten = sharePreferences.getString("TenTK", "");
         sodienthoai = sharePreferences.getString("SoDT", "");
         diachi = sharePreferences.getString("DiaChi", "");
+        email = sharePreferences.getString("Email", "");
         rename =(EditText) findViewById(R.id.et_name_profile);
         rename.setText(ten.toString());
         rephone =(EditText) findViewById(R.id.et_phone_profile);
         rephone.setText(sodienthoai.toString());
+        remail = (EditText) findViewById(R.id.et_mail);
+        remail.setText(email.toString());
         address =(EditText) findViewById(R.id.et_address_profile);
         if(diachi!=null){
             address.setText(diachi.toString());

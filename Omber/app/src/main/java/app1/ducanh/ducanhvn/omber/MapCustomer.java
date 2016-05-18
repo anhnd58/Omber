@@ -51,6 +51,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -113,13 +114,16 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        arrsRider.add(new Rider(0, "Nguyen Duc Anh", 21.009642, 105.788684, "8.5", "01655756848", "Nhiệt Tình"));
-        arrsRider.add(new Rider(1, "Nguyen Van B", 21.030575, 105.782963, "8.5", "01655756848", "Thân Thiện"));
-        arrsRider.add(new Rider(2, "Phan Anh", 21.034901, 105.781676, "8.5", "01655756848", "Chảnh chọe"));
-        arrsRider.add(new Rider(3, "Nguyen Viet Cuong", 21.038095, 105.781419, "8.5", "01655756848", "Nhiệt Tình"));
-        arrsRider.add(new Rider(4, "Pham Van Chinh", 21.031436, 105.777460, "8.5", "01655756848", "Chưa đánh giá"));
-        arrsRider.add(new Rider(5, "Xe Om", 20.997693, 105.841364, "8.0", "01655756848", "Thân Thiện"));
-        arrsRider.add(new Rider(6, "Xe Om Soai Ca", 21.038195, 105.796419, "8.0", "01655756848", "Chưa đánh giá"));
+        arrsRider.add(new Rider(0, R.drawable.ava_da, "Nguyễn Đức Anh", 21.041798, 105.782565, "8.5", "01655756848", "Đẹp trai, nhiệt tình"));
+        arrsRider.add(new Rider(1,R.drawable.ava_gaal, "Louis Van Gaal", 21.036762, 105.782393, "8.5", "01655756848", "thân thiện"));
+        arrsRider.add(new Rider(2, R.drawable.ava_pa, "Phan Anh", 21.034609, 105.780548, "8.5", "01654393959", "Đẹp trai, chảnh chọe"));
+        arrsRider.add(new Rider(3, R.drawable.ava_cuong, "Nguyễn Viết Cương", 21.036421, 105.779078, "8.5", "0988549694", "Đẹp trai, nhiệt tình"));
+        arrsRider.add(new Rider(4, R.drawable.ava_pvc, "Phạm Văn Chính", 21.036341, 105.789131, "8.5", "01655756848", "Đẹp trai, lái lụa"));
+        arrsRider.add(new Rider(5, R.drawable.ava_trang, "Trinh Vân Trang", 21.040326, 105.781020, "8.0", "01655756848", "Xinh, thân thiện"));
+        arrsRider.add(new Rider(6, R.drawable.ava_cr7, "Cristiano Ronaldo", 21.038747, 105.790373, "8.0", "01694990606", "Chưa đánh giá"));
+        arrsRider.add(new Rider(7, R.drawable.ava_user, "G-Dragon", 21.028862, 105.779528, "8.0", "01694932606", "Chưa đánh giá"));
+        arrsRider.add(new Rider(8, R.drawable.ava_user, "Lê Thanh Ngọc", 21.025313, 105.788794, "8.0", "01624931106", "Chưa đánh giá"));
+        arrsRider.add(new Rider(9, R.drawable.ava_user, "Doãn Thị Hiền", 21.029307, 105.802166, "8.0", "01674235106", "Chưa đánh giá"));
 
         setContentView(R.layout.activity_main_when_signin_success);
 
@@ -147,6 +151,7 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
             public void onPanelSlide(View view, float v) {
 
                 RelativeLayout header = (RelativeLayout) findViewById(R.id.sliding_panel_header);
+
                 TextView name = (TextView) findViewById(R.id.sliding_panel_txtViewName);
                 TextView point = (TextView) findViewById(R.id.sliding_panel_tvPoint);
                 //RatingBar rate = (RatingBar) findViewById(R.id.rating);
@@ -223,10 +228,6 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        /*LatLng latlngGiaiPhong = new LatLng(20.997693, 105.841364);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlngGiaiPhong, 16));
-        mMap.addMarker(new MarkerOptions().position(latlngGiaiPhong).title("Giải Phóng"));*/
         Direction md = new Direction();
         /*Document doc = md.getDocument(latlngPhamHung, latlngGiaiPhong, Direction.MODE_DRIVING);
         ArrayList<LatLng> directionPoint = md.getDirection(doc);
@@ -253,7 +254,7 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
 
         addMarker(arrsRider);
 //      setting camera
-        LatLng posCamera = new LatLng(21.009642, 105.788684);
+        LatLng posCamera = new LatLng(21.038387, 105.783603);
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(posCamera)
                 .zoom(14)
@@ -270,6 +271,9 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
                         //Building building = ArrayBuildings.getInstance(MapsActivity.this).getBuildingById(markerList.get(i).getId());
                         Rider rider = arrsRider.get(markerList.get(i).getId());
                         if (rider != null) {
+                            ImageView img_rider = (ImageView) findViewById(R.id.sliding_panel_ImgAvarta);
+                            img_rider.setImageResource(rider.getImg());
+
                             TextView name_rider = (TextView) findViewById(R.id.sliding_panel_txtViewName);
                             name_rider.setText(String.valueOf(rider.getName()));
                             TextView point_rider = (TextView) findViewById(R.id.sliding_panel_tvPoint);

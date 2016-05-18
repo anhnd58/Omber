@@ -64,8 +64,8 @@ public class SignIn extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(RESULT_CANCELED);
-                finish();
+                username.setText("");
+                pass.setText("");
             }
         });
 

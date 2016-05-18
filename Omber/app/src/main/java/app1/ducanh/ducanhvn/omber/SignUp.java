@@ -67,6 +67,7 @@ public class SignUp extends AppCompatActivity {
                 edit.putString("MatKhau",textPass.getText().toString());
                 edit.putString("TenTK", textName.getText().toString());
                 edit.putString("SoDT", textPhone.getText().toString());
+                edit.putString("Email", textEmail.getText().toString());
                 edit.commit();
                 Toast.makeText(SignUp.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
                 finish();
