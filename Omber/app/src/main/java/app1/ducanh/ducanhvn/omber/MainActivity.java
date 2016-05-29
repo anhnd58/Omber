@@ -3,13 +3,8 @@ package app1.ducanh.ducanhvn.omber;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -43,6 +39,7 @@ public class MainActivity extends AppCompatActivity
             setContentView(R.layout.activity_main);
         }*/
         setContentView(R.layout.activity_main);
+        //Firebase.setAndroidContext(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -86,6 +83,10 @@ public class MainActivity extends AppCompatActivity
                     //SignIn.CHECK_SIGNIN = true
                     Intent intent2 = new Intent(MainActivity.this, MapCustomer.class);
                     startActivity(intent2);
+
+                } else if (tkdn.equals("xeom") && mkdn.equals("passom")){
+                    Intent intent3 = new Intent(MainActivity.this, MapRider.class);
+                    startActivity(intent3);
 
                 } else {
                     Toast.makeText(getApplication(), "Đăng nhập không thành công", Toast.LENGTH_SHORT).show();

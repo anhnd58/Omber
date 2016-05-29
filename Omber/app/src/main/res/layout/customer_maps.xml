@@ -49,7 +49,6 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-
                 <EditText
                     android:id="@+id/edtSearch"
                     android:layout_width="0dp"
@@ -102,6 +101,13 @@
                     android:layout_marginRight="16dp"
                     android:src="@drawable/ic_mylocation"
                     app:borderWidth="0dp" />
+                <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/fab_datxe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="100dp"
+                    android:layout_marginRight="16dp"
+                    android:src="@drawable/btn_datxe" />
 
             </LinearLayout>
         </RelativeLayout>
@@ -138,13 +144,6 @@
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/sliding_panel_font_name_size" />
 
-                    <!--<TextView
-                        android:id="@+id/sliding_panel_txtViewUniversity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="hello"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="@dimen/sliding_panel_font_university_size" />-->
                     <TextView
                         android:id="@+id/sliding_panel_tvPoint"
                         android:layout_width="wrap_content"
@@ -152,25 +151,17 @@
                         android:text="Point: 8.0"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="@dimen/sliding_panel_font_university_size" />
-                    <!--<RatingBar
-                        android:id="@+id/rating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentBottom="true"
-                        android:numStars="4"
-                        android:stepSize="0.5"/>-->
 
                 </LinearLayout>
 
                 <ImageButton
-                    android:id="@+id/sliding_panel_butPhone"
+                    android:id="@+id/sliding_panel_butRequest"
                     android:layout_width="@dimen/sliding_panel_height"
                     android:layout_height="@dimen/sliding_panel_height"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/sliding_panel_margin_right_direction"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/phone" />
+                    android:src="@drawable/btn_request" />
 
             </RelativeLayout>
 
@@ -188,18 +179,15 @@
                     android:text="Số điện thoại :"
                     android:textColor="@android:color/secondary_text_light"
                     android:textSize="@dimen/sliding_panel_font_info_size" />
-
-                <!--<ImageButton
+                <ImageButton
                     android:id="@+id/sliding_panel_butPhone"
-                    android:layout_width="@dimen/sliding_panel_height"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/sliding_panel_margin_right_direction"
-                    android:layout_marginTop="8dp"
-                    android:src="@drawable/phone"
+                    android:layout_marginRight="25dp"
                     android:background="@android:color/transparent"
-                    />-->
-                <!--android:src="@drawable/ic_phone"-->
+                    android:src="@drawable/phone" />
 
             </RelativeLayout>
 

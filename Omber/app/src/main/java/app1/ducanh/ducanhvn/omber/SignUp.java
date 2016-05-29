@@ -51,15 +51,19 @@ public class SignUp extends AppCompatActivity {
                 }
                 if (!checkEmail(textEmail.getText().toString())){
                     Toast.makeText(SignUp.this, "Email không hợp lệ", Toast.LENGTH_SHORT).show();
+                    textEmail.setText("");
                 }
                 if (!checkPhone(textPhone.getText().toString())) {
                     Toast.makeText(SignUp.this, "Số điện thoại không hợp lệ", Toast.LENGTH_SHORT).show();
+                    textPhone.setText("");
                 }
                 if (!checkPass(textPass.getText().toString(), textPassAgain.getText().toString())){
                     Toast.makeText(SignUp.this, "Mật khẩu chưa khớp", Toast.LENGTH_SHORT).show();
+                    textPassAgain.setText("");
                 }
                 if (!checkUserName(textUser.getText().toString())){
                     Toast.makeText(SignUp.this, "Tên đăng nhập đã tồn tại", Toast.LENGTH_SHORT).show();
+                    textUser.setText("");
                 }
                 //nạp vào CSDL
                 SharedPreferences.Editor edit = sharePreferences.edit();
@@ -69,8 +73,12 @@ public class SignUp extends AppCompatActivity {
                 edit.putString("SoDT", textPhone.getText().toString());
                 edit.putString("Email", textEmail.getText().toString());
                 edit.commit();
-                Toast.makeText(SignUp.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                finish();
+                if (checkNull(textUser.getText().toString())&&checkNull(textName.getText().toString())&&checkNull(textPass.getText().toString())&&checkNull(textPassAgain.getText().toString())&&checkNull(textPhone.getText().toString())){
+                    Toast.makeText(SignUp.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else Toast.makeText(SignUp.this, "Đăng ký không thành công", Toast.LENGTH_SHORT).show();
+
+                //finish();
 
             }
         });

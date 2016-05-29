@@ -1,68 +1,48 @@
 package app1.ducanh.ducanhvn.omber;
-import app1.ducanh.ducanhvn.omber.adapter.GPSTracker;
-import app1.ducanh.ducanhvn.omber.adapter.LocationServices;
+
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentActivity;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import android.app.AlertDialog;
-import android.app.Application;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.Outline;
-import android.location.Criteria;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Message;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RatingBar;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+//import com.firebase.client.Firebase;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -74,26 +54,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import app1.ducanh.ducanhvn.omber.adapter.GPSTracker;
 
 /**
  * Created by Dell 3360 on 5/2/2016.
  */
 public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
     private static final float ZOOM_CAMERA = 13.0f;
-    private static final double LATITUDE_CAMERA = 21.03844442;
-    private static final double LONGGITUDE_CAMERA = 105.78237534;
-    private static final LatLng LEFT_BOTTOM_CONNER = new LatLng(21.036921, 105.781066);
-    private static final LatLng RIGHT_TOP_CONNER = new LatLng(21.040987, 105.785605);
-    private static final LatLng LOCATION_VNU = new LatLng(21.036787, 105.782040);
+    final private static int DIALOG_INFO = 1;
+    EditText begin, destination, price;
+    String type_info = "";
+    String address, city, state, country,postalCode, knownName ;
     private GoogleMap mMap;
     private List<MapMarker> markerList = new ArrayList<>();
     //  use to manage thread
-    private Handler handler = null;
-    private boolean isSearch = false;
-    private Location location = null;
-    private Circle circleLocation = null;
+    SharedPreferences sharePreferences;
     //  marker of location
     //private Marker markerLocation = null;
 
@@ -107,9 +87,10 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
     private int numberofMarker;
     //  marker when touch
     private Marker markerChoose=null;
-    ImageButton butSlidingmakePhone;
+    ImageButton butSlidingmakePhone, butSlidingRequest ;
 
     private List<Rider> arrsRider = new ArrayList<Rider>();
+    //Firebase root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +106,11 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
         arrsRider.add(new Rider(8, R.drawable.ava_user, "Lê Thanh Ngọc", 21.025313, 105.788794, "8.0", "01624931106", "Chưa đánh giá"));
         arrsRider.add(new Rider(9, R.drawable.ava_user, "Doãn Thị Hiền", 21.029307, 105.802166, "8.0", "01674235106", "Chưa đánh giá"));
 
+        //Firebase.setAndroidContext(this);
         setContentView(R.layout.activity_main_when_signin_success);
+        sharePreferences = getSharedPreferences("config", Context.MODE_PRIVATE);
+
+        //root = new Firebase("https://omber-data.firebaseio.com/");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -183,19 +168,16 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
             public void onPanelHidden(View view) {
             }
         });
+
         // button goi nguoi lai xe
         butSlidingmakePhone = (ImageButton)findViewById(R.id.sliding_panel_butPhone);
-        //update location
-        //updateLocation();
-        //
+        butSlidingRequest = (ImageButton)findViewById(R.id.sliding_panel_butRequest);
+        // updatelocation
         final FloatingActionButton fab_location = (FloatingActionButton) findViewById(R.id.fab_location);
         fab_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                21.040987, 105.785605
-//                21.036921, 105.781066
                 updateLocation();
-//
                 /*Location myLocation = null;
                 LatLng myLatLng = new LatLng(myLocation.getLatitude(),myLocation.getLongitude());
                 CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -213,6 +195,14 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
             }
         });
         fab_location.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+        // thong tin dat xe
+        final FloatingActionButton fab_datxe = (FloatingActionButton) findViewById(R.id.fab_datxe);
+        fab_datxe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(DIALOG_INFO);
+            }
+        });
 
     }
     /**
@@ -303,26 +293,40 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
                         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                         slidingUpPanelLayout.setPanelHeight(180);
 
-                        butSlidingmakePhone.setOnClickListener(new View.OnClickListener() {
+                        butSlidingRequest.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 ////// do sth
+                                String diemdi, diemden, gia;
+                                diemdi = sharePreferences.getString("Begin", "");
+                                diemden = sharePreferences.getString("Destination", "");
+                                gia = sharePreferences.getString("Price", "");
+                                if (diemden.equals("") || gia.equals("")) {
+                                    Toast.makeText(MapCustomer.this, " Bạn phải điền đủ thông tin đặt xe", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(MapCustomer.this, "Diem di= " + diemdi + " Diem den = " + diemden + " Giá = " + gia + " Type = "+ type_info, Toast.LENGTH_SHORT).show();
+
+                                    //root.child("message").setValue("Diem di= " + diemdi + " Diem den = " + diemden + " Giá = " + gia);
+                                    AlertDialogRequest alertDialogRequest = new AlertDialogRequest();
+                                    alertDialogRequest.show(getFragmentManager(), "alert");
+                                }
+                            }
+                        });
+                        butSlidingmakePhone.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
                                 AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
                                 alertDialogFragment.show(getFragmentManager(), "alert");
                             }
                         });
 
-                    } /*else {
-                        markerList.get(i).getMarker().setIcon(BitmapDescriptorFactory.defaultMarker(SettingActivity.MENU_COLOR_FLOAT[
-                                setting.getInt(SettingActivity.KEY_COLOR, 0)]));
-                    }*/
+                    }
                 }
                 return true;
 
             }
         });
     }
-
 
     /* Ve duong di */
     private void drawPath(String path) {
@@ -388,8 +392,6 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
             Location location = new Location("");
             location.setLatitude(rider.getLocationX());
             location.setLongitude(rider.getLocationY());
-            //List<Building> buildingList = ArrayBuildings.getInstance(MapsActivity.this).getBuildingsByLocation(numberofMarker, location);
-            //List<Rider> riderList
             addMarker(arrsRider);
             LatLng posCamera = new LatLng(location.getLatitude(), location.getLongitude());
             CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -447,6 +449,7 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
             currentMarker.showInfoWindow();
         }
     }
+    // Dialog goi dien
     private class AlertDialogFragment extends DialogFragment {
         // Build AlertDialog using AlertDialog.Builder
         @Override
@@ -476,6 +479,37 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
             return builder.create();
         }
     }
+    // Dialog request
+    private class AlertDialogRequest extends DialogFragment {
+        // Build AlertDialog using AlertDialog.Builder
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Gửi yêu cầu đến xe ôm này?");
+            // User cannot dismiss dialog by hitting back button
+            builder.setCancelable(false);
+            // Set up No Button
+            builder.setNegativeButton("Không!",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,
+                                            int id) {
+                            dialog.dismiss();
+                        }
+                    });
+
+            // Set up Yes Button
+            builder.setPositiveButton("Gửi",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(
+                                final DialogInterface dialog, int id) {
+                            Toast.makeText(MapCustomer.this, " Gửi thành công !", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+                    });
+            return builder.create();
+        }
+    }
+    //Dialog dang xuat
     private class AlertDialogLogOut extends DialogFragment {
         // Build AlertDialog using AlertDialog.Builder
         @Override
@@ -505,6 +539,102 @@ public class MapCustomer extends AppCompatActivity implements OnMapReadyCallback
                     });
             return builder.create();
         }
+    }
+    // dialog dat xe
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        AlertDialog dialogDetails = null;
+
+        switch (id) {
+            case DIALOG_INFO:
+                LayoutInflater inflater = LayoutInflater.from(this);
+                View dialogview = inflater.inflate(R.layout.request_info_dialog, null);
+                AlertDialog.Builder dialogbuilder = new AlertDialog.Builder(this);;
+                dialogbuilder.setView(dialogview);
+                dialogDetails = dialogbuilder.create();
+                break;
+        }
+        return dialogDetails;
+        //return super.onCreateDialog(id);
+    }
+
+    @Override
+    protected void onPrepareDialog(int id, Dialog dialog) {
+        switch (id){
+            case DIALOG_INFO:
+                final AlertDialog alertDialog = (AlertDialog) dialog;
+                Button Ok_button = (Button) alertDialog.findViewById(R.id.button_OK_info);
+                Button Cancel_button = (Button) alertDialog.findViewById(R.id.button_cancel_info);
+                begin = (EditText) alertDialog.findViewById(R.id.edit_begin);
+                destination = (EditText) alertDialog.findViewById(R.id.edit_destination);
+                price = (EditText) alertDialog.findViewById(R.id.edit_price);
+                RadioGroup radioPayGroup = (RadioGroup) alertDialog.findViewById(R.id.radiogroup_type);
+                switch (radioPayGroup.getCheckedRadioButtonId()) {
+                    case R.id.radio_human: {
+                        type_info = "Đi xe";
+                        break;
+                    }
+                    case R.id.radio_material:{
+                        type_info = "Gửi hàng";
+                        break;
+                    }
+                    default: {
+                        type_info = "Đi xe";
+                    }
+                }
+                GPSTracker tracker1 = new GPSTracker(MapCustomer.this);
+                Geocoder geocoder;
+                List<Address> addresses = null;
+                geocoder = new Geocoder(MapCustomer.this, Locale.getDefault());
+                try {
+                    addresses = geocoder.getFromLocation(tracker1.getLatitude(),tracker1.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                city = addresses.get(0).getLocality();
+                state = addresses.get(0).getAdminArea();
+                country = addresses.get(0).getCountryName();
+                postalCode = addresses.get(0).getPostalCode();
+                knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
+
+                begin.setText(address + ", " +city);
+                Ok_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        /*Bundle bundle = new Bundle();
+                        bundle.putString("stringname", bookname.getText().toString());
+                        bundle.putString("stringemail", bookemail.getText().toString());
+                        bundle.putString("stringphone", bookphone.getText().toString());
+                        bundle.putString("stringcheckin", bookcheckin.getText().toString());
+                        bundle.putString("stringcheckout", bookcheckout.getText().toString());
+                        bundle.putString("stringpay", finalPayment);
+                        bundle.putString("stringrooms", bookrooms.getText().toString());
+                        bundle.putString("stringguests", bookguests.getText().toString());
+                        bundle.putString("stringbookcode", code);
+                        Intent intent = new Intent(BookRoom.this, BookExecute.class);
+                        intent.putExtras(bundle);
+                        startActivity(intent);*/
+
+                        SharedPreferences.Editor edit = sharePreferences.edit();
+                        edit.putString("Begin", address + ", "+ city);
+                        edit.putString("Destination", destination.getText().toString());
+                        edit.putString("Price", price.getText().toString());
+                        edit.commit();
+                        Toast.makeText(MapCustomer.this,"Diem di = " + knownName + address + ", "+ city + "Diem den = " + destination.getText().toString() + " Giá = " + price.getText().toString() + " Type = "+ type_info , Toast.LENGTH_SHORT).show();
+                        alertDialog.dismiss();
+                    }
+                });
+                Cancel_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+                //// break of switch id dialog
+                break;
+        }
+        //super.onPrepareDialog(id, dialog);
     }
 
     @Override
